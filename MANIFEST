@@ -1,0 +1,16 @@
+.cvsignore
+Build.PL
+Changes
+MANIFEST
+META.yml
+Makefile.PL
+README
+lib/Array/.cvsignore
+lib/Array/Base.pm
+lib/Array/Base.xs
+t/base.t
+t/pod_cvg.t
+t/pod_syn.t
+t/scope.t
+t/scope_0.pm
+SIGNATURE    Added here by Module::Build
