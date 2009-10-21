@@ -1,3 +1,4 @@
+{ use 5.006; }
 use warnings;
 use strict;
 
@@ -5,7 +6,6 @@ use Module::Build;
 
 Module::Build->new(
 	module_name => "Array::Base",
-	dist_version => "0.000",
 	license => "perl",
 	build_requires => {
 		"ExtUtils::CBuilder" => "0.15",

@@ -1,3 +1,26 @@
+version 0.001; 2009-10-21
+
+  * bugfix: correct behaviour of array slicing in scalar context
+
+  * bugfix: also influence list slicing and array splicing, as $[ does
+
+  * for Perl 5.11, also influence the new array keys() and each()
+    operators
+
+  * reorganise documentation, particularly expanding the comparison
+    with $[
+
+  * use integer arithmetic operators for efficiency
+
+  * test all combinations of scalar and list contexts
+
+  * in documentation, correct statement about when $[ is likely to be
+    removed from the core
+
+  * split test suite into one file per affected opcode
+
+  * check for required Perl version at runtime
+
 version 0.000; 2009-09-27
 
   * initial released version

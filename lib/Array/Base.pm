@@ -23,6 +23,8 @@ lexically-scoped manner.  Each block of code, therefore, is subject to
 a fixed offset.  It is expected that the affected code is written with
 knowledge of what that offset is.
 
+=head2 Using an array index offset
+
 An array index offset is set up by a C<use Array::Base> directive, with
 the desired offset specified as an argument.  Beware that a bare, unsigned
 number in that argument position, such as "C<use Array::Base 1>", will
@@ -38,34 +40,92 @@ replaces the previous offset: they do not add.  "C<no Array::Base>" is
 equivalent to "C<use Array::Base +0>": it returns to the Perlish state
 with zero offset.
 
-A declared array index offset mainly influences array indexing, both
-for single elements and for array slices.  It also affects the value
-returned by "C<$#array>": this returns the index of the last element
-of the array, taking the offset into account.  Only forwards indexing,
-relative to the start of the array, is handled.  End-relative indexing,
-normally done using negative index values, is not supported when an
-index offset is in effect, and will have unpredictable results.
+A declared array index offset influences these types of operation:
+
+=over
+
+=item *
+
+array indexing (C<$a[3]>)
+
+=item *
+
+array slicing (C<@a[3..5]>)
+
+=item *
+
+list indexing/slicing (C<qw(a b c)[2]>)
+
+=item *
+
+array splicing (C<splice(@a, 3, 2)>)
+
+=item *
+
+array last index (C<$#a>)
+
+=item *
+
+array keys (C<keys(@a)>) (Perl 5.11 and later)
+
+=item *
+
+array each (C<each(@a)>) (Perl 5.11 and later)
+
+=back
+
+Only forwards indexing, relative to the start of the array, is supported.
+End-relative indexing, normally done using negative index values, is
+not supported when an index offset is in effect.  Use of an index that
+is numerically less than the index offset will have unpredictable results.
+
+=head2 Differences from C<$[>
 
 This module is a replacement for the historical L<C<$[>|perlvar/$[>
 variable.  In early Perl that variable was a runtime global, affecting
 all array indexing in the program.  In Perl 5, assignment to C<$[>
 acts as a lexically-scoped pragma.  C<$[> is highly deprecated, and
-the mechanism that supports it is likely to be removed in Perl 5.12.
+the mechanism that supports it is due to be removed in Perl 5.13.
 This module reimplements the index offset feature without using the
-deprecated mechanism.  Unlike C<$[>, this module does not affect indexing
-into strings with L<index|perlfunc/index> or L<substr|perlfunc/substr>.
-It also does not show the offset value in C<$[>.
+deprecated mechanism.
+
+Unlike C<$[>, this module does not affect indexing into strings
+(with L<index|perlfunc/index>, L<substr|perlfunc/substr>, and
+L<pos|perlfunc/pos>): this module is concerned only with arrays.
+
+This module does not show the offset value in C<$[> or any other
+accessible variable.  With the array offset being lexically scoped,
+there should be no need to write code to handle a variable offset.
+
+C<$[> has some predictable, but somewhat strange, behaviour for indexes
+less than the offset.  The behaviour differs slightly between slicing
+and scalar indexing.  This module does not attempt to replicate it,
+and does not support end-relative indexing at all.
+
+The last-index operator (C<$#a>), as implemented by the Perl core,
+generates a magical scalar which is linked to the underlying array.
+The numerical value of the scalar varies if the length of the array
+is changed, and code with different C<$[> settings will see accordingly
+different values.  The scalar can also be written to, to change the length
+of the array, and again the interpretation of the value written varies
+according to the C<$[> setting of the code that is doing the writing.
+This module does not replicate any of that behaviour.  With an array
+index offset from this module in effect, C<$#a> evaluates to an ordinary
+rvalue scalar, giving the last index of the array as it was at the time
+the operator was evaluated, according to the array index offset in effect
+where the operator appears.
 
 =cut
 
 package Array::Base;
 
+{ use 5.008001; }
 use warnings;
 use strict;
 
 use Lexical::SealRequireHints 0.001;
 
-our $VERSION = "0.000";
+our $VERSION = "0.001";
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -87,6 +147,19 @@ Clears the array index offset, in the lexical environment that is
 currently compiling.
 
 =back
+
+=head1 BUGS
+
+L<B::Deparse> will generate incorrect source when deparsing code that
+uses an array index offset.  It will include both the pragma to set up
+the offset and the munged form of the affected operators.  Either the
+pragma or the munging is required to get the index offset effect; using
+both will double the offset.  Also, the code generated for an array each
+(C<each(@a)>) operation involves a custom operator, which L<B::Deparse>
+can't understand, so the source it emits in that case is completely wrong.
+
+The additional operators generated by this module cause spurious warnings
+if some of the affected array operations are used in void context.
 
 =head1 SEE ALSO
 
