@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.55.
+signed via the Module::Signature module, version 0.63.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,16 +14,16 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 66bf54f4260cb98a67a2912ba21e6999e53340c9 .cvsignore
-SHA1 500ad716ffe804d3a44c29195af109b8c1f38281 Build.PL
-SHA1 50d5cbe41faa1c5674b875145ffffc7058f87869 Changes
+SHA1 ed6428fafb5bbe64c11d35f806cccbb2573b7655 .cvsignore
+SHA1 89e0ed2005216d582568e64e091cba19ae571001 Build.PL
+SHA1 5a0e3bb54c3beef943674ae83da5c73c657d29d3 Changes
 SHA1 cc7067ac5b4e385a962c617de622340ee3619299 MANIFEST
-SHA1 967fc3056b1941380d6d649e28c46eb4a867fddd META.yml
-SHA1 1e0efaa14e95f752eb6981e411461cf0e62fe875 Makefile.PL
-SHA1 ca56002470d172989e0a55a7590ab2054e11b97a README
+SHA1 114035fbdcbb358517f1667f43130103623a9fdb META.yml
+SHA1 cbe646e9eec8e4cf1175c7fd8cb87a31ad241a82 Makefile.PL
+SHA1 c05a2ceb5e6f7c244de28c0407fb0f4b3c9ab9be README
 SHA1 13cb5d854e1a1c745490faf986395e9029b41ca9 lib/Array/.cvsignore
-SHA1 1a4f8da7931a5ac9319783ab7af76b1ce240f317 lib/Array/Base.pm
-SHA1 66910fc90a6b9fb3baa249582bc61e5ecee41516 lib/Array/Base.xs
+SHA1 cda0384f99a05f3084f8b3774987a052cf27d748 lib/Array/Base.pm
+SHA1 7efc1783a8e908cf8062b988b154d954f4f2cf94 lib/Array/Base.xs
 SHA1 a13fd18b9d43a5dffe1baef473d2d184b1663eea t/aeach.t
 SHA1 8fbab418dd4b6a8017c51c2921efe47527961182 t/aelem.t
 SHA1 266c37ba92ffa6b1f0973e663e38716ca844aab3 t/akeys.t
@@ -38,7 +38,7 @@ SHA1 ca190ca5aa1fee43bd3b9ed77dc978c1b7b1ff04 t/splice.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.9 (GNU/Linux)
 
-iEYEARECAAYFAkrenT8ACgkQOV9mt2VyAVHeEwCfUKBPALU5N6Mo7LVmYed5clXa
-YxIAn0qWRLb+LI11P/IHkgPO3AVzuu+N
-=c0Cy
+iEYEARECAAYFAkvBdDAACgkQOV9mt2VyAVF3xQCdG9XpnUnv5ir3gNbVkCe3F8y/
+B5MAoJ/Az/e/T1Ma4ij7as7duAOOMsP0
+=ytYK
 -----END PGP SIGNATURE-----

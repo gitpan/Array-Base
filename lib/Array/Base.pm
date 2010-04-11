@@ -123,9 +123,9 @@ package Array::Base;
 use warnings;
 use strict;
 
-use Lexical::SealRequireHints 0.001;
+use Lexical::SealRequireHints 0.003;
 
-our $VERSION = "0.001";
+our $VERSION = "0.002";
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -171,7 +171,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 

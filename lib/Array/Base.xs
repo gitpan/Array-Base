@@ -36,14 +36,16 @@ static OP *(*nxck_keys)(pTHX_ OP *o);
 static OP *(*nxck_each)(pTHX_ OP *o);
 #endif /* QHAVE_OP_AEACH */
 
-static IV current_base(pTHX)
+#define current_base() THX_current_base(aTHX)
+static IV THX_current_base(pTHX)
 {
 	HE *base_ent = hv_fetch_ent(GvHV(PL_hintgv), base_hint_key_sv, 0,
 					base_hint_key_hash);
 	return base_ent ? SvIV(HeVAL(base_ent)) : 0;
 }
 
-static OP *mapify_op(pTHX_ OP *lop, IV base, U16 type)
+#define mapify_op(lop, base, type) THX_mapify_op(aTHX_ lop, base, type)
+static OP *THX_mapify_op(pTHX_ OP *lop, IV base, U16 type)
 {
 	OP *mop = newLISTOP(OP_LIST, 0,
 			newBINOP(type, 0,
@@ -67,7 +69,7 @@ static OP *mapify_op(pTHX_ OP *lop, IV base, U16 type)
 static OP *myck_aelem(pTHX_ OP *op)
 {
 	IV base;
-	if((base = current_base(aTHX)) != 0) {
+	if((base = current_base()) != 0) {
 		OP *aop, *iop;
 		if(!op->op_flags & OPf_KIDS) {
 			bad_ops:
@@ -83,10 +85,11 @@ static OP *myck_aelem(pTHX_ OP *op)
 	return nxck_aelem(aTHX_ op);
 }
 
-static OP *myck_slice(pTHX_ OP *op, OP *(*nxck)(pTHX_ OP *o))
+#define base_myck_slice(op, nxck) THX_base_myck_slice(aTHX_ op, nxck)
+static OP *THX_base_myck_slice(pTHX_ OP *op, OP *(*nxck)(pTHX_ OP *o))
 {
 	IV base;
-	if((base = current_base(aTHX)) != 0) {
+	if((base = current_base()) != 0) {
 		OP *lop, *aop, *mop;
 		if(!op->op_flags & OPf_KIDS) {
 			bad_ops:
@@ -96,7 +99,7 @@ static OP *myck_slice(pTHX_ OP *op, OP *(*nxck)(pTHX_ OP *o))
 		aop = lop->op_sibling;
 		if(!aop || aop->op_sibling) goto bad_ops;
 		lop->op_sibling = NULL;
-		mop = list(mapify_op(aTHX_ lop, base, OP_I_SUBTRACT));
+		mop = list(mapify_op(lop, base, OP_I_SUBTRACT));
 		mop->op_sibling = aop;
 		cLISTOPx(op)->op_first = mop;
 	}
@@ -104,17 +107,17 @@ static OP *myck_slice(pTHX_ OP *op, OP *(*nxck)(pTHX_ OP *o))
 }
 
 static OP *myck_aslice(pTHX_ OP *op) {
-	return myck_slice(aTHX_ op, nxck_aslice);
+	return base_myck_slice(op, nxck_aslice);
 }
 
 static OP *myck_lslice(pTHX_ OP *op) {
-	return myck_slice(aTHX_ op, nxck_lslice);
+	return base_myck_slice(op, nxck_lslice);
 }
 
 static OP *myck_av2arylen(pTHX_ OP *op)
 {
 	IV base;
-	if((base = current_base(aTHX)) != 0) {
+	if((base = current_base()) != 0) {
 		op = nxck_av2arylen(aTHX_ op);
 		return newBINOP(OP_I_ADD, 0, scalar(op),
 				newSVOP(OP_CONST, 0, newSViv(base)));
@@ -126,7 +129,7 @@ static OP *myck_av2arylen(pTHX_ OP *op)
 static OP *myck_splice(pTHX_ OP *op)
 {
 	IV base;
-	if((base = current_base(aTHX)) != 0) {
+	if((base = current_base()) != 0) {
 		OP *pop, *aop, *iop;
 		if(!op->op_flags & OPf_KIDS) {
 			bad_ops:
@@ -163,9 +166,8 @@ static OP *myck_keys(pTHX_ OP *op)
 	if((op->op_flags & OPf_KIDS) && (aop = cUNOPx(op)->op_first, 1) &&
 			(aop->op_type == OP_PADAV ||
 			 aop->op_type == OP_RV2AV) &&
-			(base = current_base(aTHX)) != 0) {
-		return mapify_op(aTHX_ list(nxck_keys(aTHX_ op)),
-				base, OP_I_ADD);
+			(base = current_base()) != 0) {
+		return mapify_op(list(nxck_keys(aTHX_ op)), base, OP_I_ADD);
 	} else {
 		return nxck_keys(aTHX_ op);
 	}
@@ -199,7 +201,7 @@ static OP *myck_each(pTHX_ OP *op)
 	if((op->op_flags & OPf_KIDS) && (aop = cUNOPx(op)->op_first, 1) &&
 			(aop->op_type == OP_PADAV ||
 			 aop->op_type == OP_RV2AV) &&
-			(base = current_base(aTHX)) != 0) {
+			(base = current_base()) != 0) {
 		op = newLISTOP(OP_LIST, 0, nxck_each(aTHX_ op),
 					newSVOP(OP_CONST, 0, newSViv(base)));
 		op->op_type = OP_REVERSE;
@@ -231,7 +233,7 @@ BOOT:
 #endif /* QHAVE_OP_AEACH */
 
 void
-import(SV *class, IV base)
+import(SV *classname, IV base)
 CODE:
 	PL_hints |= HINT_LOCALIZE_HH;
 	gv_HVadd(PL_hintgv);
@@ -251,7 +253,7 @@ CODE:
 	}
 
 void
-unimport(SV *class)
+unimport(SV *classname)
 CODE:
 	PL_hints |= HINT_LOCALIZE_HH;
 	gv_HVadd(PL_hintgv);

@@ -1,3 +1,19 @@
+version 0.002; 2010-04-11
+
+  * bugfix: require bugfixed version of Lexical::SealRequireHints (for
+    passing package through to required code in pure-Perl version of
+    Lexical::SealRequireHints)
+
+  * in XS, use macros to avoid explicit passing of aTHX, in the manner
+    of the core
+
+  * in XS, avoid using "class" as a variable name, for compatibility
+    with C++ compilers
+
+  * in Build.PL, explicitly declare configure-time requirements
+
+  * add MYMETA.yml to .cvsignore
+
 version 0.001; 2009-10-21
 
   * bugfix: correct behaviour of array slicing in scalar context
