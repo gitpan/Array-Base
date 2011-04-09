@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.63.
+signed via the Module::Signature module, version 0.66.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,31 +14,32 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 ed6428fafb5bbe64c11d35f806cccbb2573b7655 .cvsignore
-SHA1 89e0ed2005216d582568e64e091cba19ae571001 Build.PL
-SHA1 5a0e3bb54c3beef943674ae83da5c73c657d29d3 Changes
-SHA1 cc7067ac5b4e385a962c617de622340ee3619299 MANIFEST
-SHA1 114035fbdcbb358517f1667f43130103623a9fdb META.yml
-SHA1 cbe646e9eec8e4cf1175c7fd8cb87a31ad241a82 Makefile.PL
-SHA1 c05a2ceb5e6f7c244de28c0407fb0f4b3c9ab9be README
+SHA1 72e156736b5d3d77802b9bde1829424311bd115e .cvsignore
+SHA1 e83dda3e7302a9f6d6588e5d5f75ac760f7e9fa9 Build.PL
+SHA1 97f20a7bb4a854f413b675418c6ee5dc3a8106d1 Changes
+SHA1 ca7ba55137d8dd689a2eb64451636666917ba7c3 MANIFEST
+SHA1 f7997b316a2d3764208b7863dc36f4e8f0d42ef0 META.json
+SHA1 43a78077f7a16a0be940022e033db8bbb6e287c4 META.yml
+SHA1 ac10abef4842e562f11f09847244c1a1b1bcca06 Makefile.PL
+SHA1 a7bd83e79dccc4fdd430239571f02f2f61ee5c68 README
 SHA1 13cb5d854e1a1c745490faf986395e9029b41ca9 lib/Array/.cvsignore
-SHA1 cda0384f99a05f3084f8b3774987a052cf27d748 lib/Array/Base.pm
-SHA1 7efc1783a8e908cf8062b988b154d954f4f2cf94 lib/Array/Base.xs
-SHA1 a13fd18b9d43a5dffe1baef473d2d184b1663eea t/aeach.t
+SHA1 8a8b762ed6f6890773278c7b02a662c6f6a767f6 lib/Array/Base.pm
+SHA1 1df6dcfd107cd82368742fb5ac292869fd641fcb lib/Array/Base.xs
+SHA1 36ab4f2819cb9b140504246e807cb7ff111f2b60 t/aeach.t
 SHA1 8fbab418dd4b6a8017c51c2921efe47527961182 t/aelem.t
-SHA1 266c37ba92ffa6b1f0973e663e38716ca844aab3 t/akeys.t
+SHA1 b409e955707327cfa594e74842512f4483f73118 t/akeys.t
 SHA1 8e1d548ee34d5309d40ab8d272190d21fd7eb693 t/aslice.t
 SHA1 8fe53d65992b6d61e926fc257669d07c5ff1da4e t/av2arylen.t
 SHA1 f5c9ffe330a2aa5acdb53921fe713f63e0c4368b t/lslice.t
-SHA1 0e141eecf3ca4903ef38d9413b5403a9ddb0392f t/pod_cvg.t
-SHA1 74a957cd8b93f25672ecc6aa578a671d084dd343 t/pod_syn.t
+SHA1 904d9a4f76525e2303e4b0c168c68230f223c8de t/pod_cvg.t
+SHA1 65c75abdef6f01a5d1588a307f2ddfe2333dc961 t/pod_syn.t
 SHA1 5b69d7e7aadd85ce3ea2cd170f0a78f9235f1a1e t/scope.t
 SHA1 596de8900bd8d930221efadf1ee8270a1448b473 t/scope_0.pm
 SHA1 ca190ca5aa1fee43bd3b9ed77dc978c1b7b1ff04 t/splice.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAkvBdDAACgkQOV9mt2VyAVF3xQCdG9XpnUnv5ir3gNbVkCe3F8y/
-B5MAoJ/Az/e/T1Ma4ij7as7duAOOMsP0
-=ytYK
+iEYEARECAAYFAk2gbRoACgkQOV9mt2VyAVFclACeMq0jN1M3RWiIXevSQjlzcUQH
+KAkAn2+oqcsCiwd3E71edHDP+0ZAO4kl
+=GSQz
 -----END PGP SIGNATURE-----

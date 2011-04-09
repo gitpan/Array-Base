@@ -2,7 +2,7 @@ use warnings;
 use strict;
 
 BEGIN {
-	if($] < 5.011) {
+	if("$]" < 5.011) {
 		require Test::More;
 		Test::More::plan(skip_all => "no array each on this Perl");
 	}

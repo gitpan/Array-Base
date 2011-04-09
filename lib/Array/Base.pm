@@ -85,7 +85,7 @@ This module is a replacement for the historical L<C<$[>|perlvar/$[>
 variable.  In early Perl that variable was a runtime global, affecting
 all array indexing in the program.  In Perl 5, assignment to C<$[>
 acts as a lexically-scoped pragma.  C<$[> is highly deprecated, and
-the mechanism that supports it is due to be removed in Perl 5.13.
+the mechanism that supports it is due to be removed in Perl 5.15.
 This module reimplements the index offset feature without using the
 deprecated mechanism.
 
@@ -125,7 +125,7 @@ use strict;
 
 use Lexical::SealRequireHints 0.003;
 
-our $VERSION = "0.002";
+our $VERSION = "0.003";
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -171,7 +171,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010, 2011 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 

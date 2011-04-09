@@ -1,3 +1,4 @@
+#define PERL_NO_GET_CONTEXT 1
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
@@ -19,8 +20,23 @@
 # define SvSHARED_HASH(SV) SvUVX(SV)
 #endif /* !SvSHARED_HASH */
 
-#define scalar(op) Perl_scalar(aTHX_ op)
-#define list(op) Perl_list(aTHX_ op)
+#ifndef op_contextualize
+# define scalar(op) Perl_scalar(aTHX_ op)
+# define list(op) Perl_list(aTHX_ op)
+# define scalarvoid(op) Perl_scalarvoid(aTHX_ op)
+# define op_contextualize(op, c) THX_op_contextualize(aTHX_ op, c)
+static OP *THX_op_contextualize(pTHX_ OP *o, I32 context)
+{
+	switch (context) {
+		case G_SCALAR: return scalar(o);
+		case G_ARRAY:  return list(o);
+		case G_VOID:   return scalarvoid(o);
+		default:
+			croak("panic: op_contextualize bad context");
+			return o;
+	}
+}
+#endif /* !op_contextualize */
 
 static SV *base_hint_key_sv;
 static U32 base_hint_key_hash;
@@ -71,7 +87,7 @@ static OP *myck_aelem(pTHX_ OP *op)
 	IV base;
 	if((base = current_base()) != 0) {
 		OP *aop, *iop;
-		if(!op->op_flags & OPf_KIDS) {
+		if(!(op->op_flags & OPf_KIDS)) {
 			bad_ops:
 			croak("strange op tree prevents applying array base");
 		}
@@ -79,8 +95,10 @@ static OP *myck_aelem(pTHX_ OP *op)
 		iop = aop->op_sibling;
 		if(!iop || iop->op_sibling) goto bad_ops;
 		aop->op_sibling =
-			scalar(newBINOP(OP_I_SUBTRACT, 0, iop,
-					newSVOP(OP_CONST, 0, newSViv(base))));
+			op_contextualize(
+				newBINOP(OP_I_SUBTRACT, 0, iop,
+					newSVOP(OP_CONST, 0, newSViv(base))),
+				G_SCALAR);
 	}
 	return nxck_aelem(aTHX_ op);
 }
@@ -91,7 +109,7 @@ static OP *THX_base_myck_slice(pTHX_ OP *op, OP *(*nxck)(pTHX_ OP *o))
 	IV base;
 	if((base = current_base()) != 0) {
 		OP *lop, *aop, *mop;
-		if(!op->op_flags & OPf_KIDS) {
+		if(!(op->op_flags & OPf_KIDS)) {
 			bad_ops:
 			croak("strange op tree prevents applying array base");
 		}
@@ -99,7 +117,8 @@ static OP *THX_base_myck_slice(pTHX_ OP *op, OP *(*nxck)(pTHX_ OP *o))
 		aop = lop->op_sibling;
 		if(!aop || aop->op_sibling) goto bad_ops;
 		lop->op_sibling = NULL;
-		mop = list(mapify_op(lop, base, OP_I_SUBTRACT));
+		mop = op_contextualize(mapify_op(lop, base, OP_I_SUBTRACT),
+			G_ARRAY);
 		mop->op_sibling = aop;
 		cLISTOPx(op)->op_first = mop;
 	}
@@ -119,7 +138,7 @@ static OP *myck_av2arylen(pTHX_ OP *op)
 	IV base;
 	if((base = current_base()) != 0) {
 		op = nxck_av2arylen(aTHX_ op);
-		return newBINOP(OP_I_ADD, 0, scalar(op),
+		return newBINOP(OP_I_ADD, 0, op_contextualize(op, G_SCALAR),
 				newSVOP(OP_CONST, 0, newSViv(base)));
 	} else {
 		return nxck_av2arylen(aTHX_ op);
@@ -131,7 +150,7 @@ static OP *myck_splice(pTHX_ OP *op)
 	IV base;
 	if((base = current_base()) != 0) {
 		OP *pop, *aop, *iop;
-		if(!op->op_flags & OPf_KIDS) {
+		if(!(op->op_flags & OPf_KIDS)) {
 			bad_ops:
 			croak("strange op tree prevents applying array base");
 		}
@@ -143,7 +162,8 @@ static OP *myck_splice(pTHX_ OP *op)
 		if(iop) {
 			OP *rest = iop->op_sibling;
 			iop->op_sibling = NULL;
-			iop = newBINOP(OP_I_SUBTRACT, 0, scalar(iop),
+			iop = newBINOP(OP_I_SUBTRACT, 0,
+					op_contextualize(iop, G_SCALAR),
 					newSVOP(OP_CONST, 0, newSViv(base)));
 			iop->op_sibling = rest;
 			aop->op_sibling = iop;
@@ -167,7 +187,8 @@ static OP *myck_keys(pTHX_ OP *op)
 			(aop->op_type == OP_PADAV ||
 			 aop->op_type == OP_RV2AV) &&
 			(base = current_base()) != 0) {
-		return mapify_op(list(nxck_keys(aTHX_ op)), base, OP_I_ADD);
+		return mapify_op(op_contextualize(nxck_keys(aTHX_ op), G_ARRAY),
+			base, OP_I_ADD);
 	} else {
 		return nxck_keys(aTHX_ op);
 	}
@@ -216,6 +237,8 @@ static OP *myck_each(pTHX_ OP *op)
 
 MODULE = Array::Base PACKAGE = Array::Base
 
+PROTOTYPES: DISABLE
+
 BOOT:
 	base_hint_key_sv = newSVpvs_share("Array::Base/base");
 	base_hint_key_hash = SvSHARED_HASH(base_hint_key_sv);
@@ -235,11 +258,12 @@ BOOT:
 void
 import(SV *classname, IV base)
 CODE:
+	PERL_UNUSED_VAR(classname);
 	PL_hints |= HINT_LOCALIZE_HH;
 	gv_HVadd(PL_hintgv);
 	if(base == 0) {
-		hv_delete_ent(GvHV(PL_hintgv), base_hint_key_sv, G_DISCARD,
-				base_hint_key_hash);
+		(void) hv_delete_ent(GvHV(PL_hintgv), base_hint_key_sv,
+				G_DISCARD, base_hint_key_hash);
 	} else {
 		SV *base_sv = newSViv(base);
 		HE *he = hv_store_ent(GvHV(PL_hintgv), base_hint_key_sv,
@@ -255,7 +279,8 @@ CODE:
 void
 unimport(SV *classname)
 CODE:
+	PERL_UNUSED_VAR(classname);
 	PL_hints |= HINT_LOCALIZE_HH;
 	gv_HVadd(PL_hintgv);
-	hv_delete_ent(GvHV(PL_hintgv), base_hint_key_sv, G_DISCARD,
-			base_hint_key_hash);
+	(void) hv_delete_ent(GvHV(PL_hintgv), base_hint_key_sv,
+			G_DISCARD, base_hint_key_hash);
