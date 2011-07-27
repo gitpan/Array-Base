@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.66.
+signed via the Module::Signature module, version 0.68.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -15,15 +15,15 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 72e156736b5d3d77802b9bde1829424311bd115e .cvsignore
-SHA1 e83dda3e7302a9f6d6588e5d5f75ac760f7e9fa9 Build.PL
-SHA1 97f20a7bb4a854f413b675418c6ee5dc3a8106d1 Changes
+SHA1 b8ac3cb2ba26b3afd47489cd4354314c6c1fa290 Build.PL
+SHA1 4a75d0da7b5f8cbf54b8f242bf4b3c928cf7eb0e Changes
 SHA1 ca7ba55137d8dd689a2eb64451636666917ba7c3 MANIFEST
-SHA1 f7997b316a2d3764208b7863dc36f4e8f0d42ef0 META.json
-SHA1 43a78077f7a16a0be940022e033db8bbb6e287c4 META.yml
+SHA1 d51900ace9a5a28fd6661ef3829bcf78da3b6c19 META.json
+SHA1 c0bcb9b40f569169201300c608277bf59346691a META.yml
 SHA1 ac10abef4842e562f11f09847244c1a1b1bcca06 Makefile.PL
 SHA1 a7bd83e79dccc4fdd430239571f02f2f61ee5c68 README
 SHA1 13cb5d854e1a1c745490faf986395e9029b41ca9 lib/Array/.cvsignore
-SHA1 8a8b762ed6f6890773278c7b02a662c6f6a767f6 lib/Array/Base.pm
+SHA1 767fcf2864fca7c6e5546caf332d3f3af17cd3e2 lib/Array/Base.pm
 SHA1 1df6dcfd107cd82368742fb5ac292869fd641fcb lib/Array/Base.xs
 SHA1 36ab4f2819cb9b140504246e807cb7ff111f2b60 t/aeach.t
 SHA1 8fbab418dd4b6a8017c51c2921efe47527961182 t/aelem.t
@@ -33,13 +33,13 @@ SHA1 8fe53d65992b6d61e926fc257669d07c5ff1da4e t/av2arylen.t
 SHA1 f5c9ffe330a2aa5acdb53921fe713f63e0c4368b t/lslice.t
 SHA1 904d9a4f76525e2303e4b0c168c68230f223c8de t/pod_cvg.t
 SHA1 65c75abdef6f01a5d1588a307f2ddfe2333dc961 t/pod_syn.t
-SHA1 5b69d7e7aadd85ce3ea2cd170f0a78f9235f1a1e t/scope.t
+SHA1 63367a4adf84d106fd42916b70d12bdbad80a044 t/scope.t
 SHA1 596de8900bd8d930221efadf1ee8270a1448b473 t/scope_0.pm
 SHA1 ca190ca5aa1fee43bd3b9ed77dc978c1b7b1ff04 t/splice.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAk2gbRoACgkQOV9mt2VyAVFclACeMq0jN1M3RWiIXevSQjlzcUQH
-KAkAn2+oqcsCiwd3E71edHDP+0ZAO4kl
-=GSQz
+iEYEARECAAYFAk4wa3QACgkQOV9mt2VyAVEVhACfYbdaUs4LkYwCYTNu8J3tLZv6
+v2UAoIu5UfvR7xfDKFOL680uK1OMG4OC
+=SQ8w
 -----END PGP SIGNATURE-----

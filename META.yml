@@ -15,7 +15,7 @@ configure_requires:
   strict: 0
   warnings: 0
 dynamic_config: 0
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110580'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110930001'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -24,13 +24,13 @@ name: Array-Base
 provides:
   Array::Base:
     file: lib/Array/Base.pm
-    version: 0.003
+    version: 0.004
 requires:
-  Lexical::SealRequireHints: 0.003
+  Lexical::SealRequireHints: 0.005
   XSLoader: 0
   perl: 5.008001
   strict: 0
   warnings: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.003
+version: 0.004

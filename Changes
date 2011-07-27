@@ -1,4 +1,12 @@
-version 0.003;  2011-04-09
+version 0.004; 2011-07-27
+
+  * bugfix: require bugfixed version of Lexical::SealRequireHints (for
+    working around [perl #73174])
+
+  * document that Perls prior to 5.9.3 don't propagate the right lexical
+    state into string eval
+
+version 0.003; 2011-04-09
 
   * bugfix: correctly detect a type of malformed op tree that the module
     can't process
