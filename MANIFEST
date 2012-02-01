@@ -1,4 +1,4 @@
-.cvsignore
+.gitignore
 Build.PL
 Changes
 MANIFEST
@@ -6,7 +6,6 @@ META.json
 META.yml
 Makefile.PL
 README
-lib/Array/.cvsignore
 lib/Array/Base.pm
 lib/Array/Base.xs
 t/aeach.t

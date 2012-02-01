@@ -1,3 +1,18 @@
+version 0.005; 2012-02-01
+
+  * bugfix: require bugfixed version of Lexical::SealRequireHints (for
+    compatibility with early-loaded warnings.pm) and invoke it earlier
+    to make sure it takes effect in time
+
+  * in doc, refer to String::Base for string index offsetting
+
+  * update documentation for $[ changes in Perl 5.15.3 and 5.15.5
+
+  * in Build.PL, declare incompatibility with pre-0.19
+    B::Hooks::OP::Check, which doesn't play nicely around op check hooking
+
+  * convert .cvsignore to .gitignore
+
 version 0.004; 2011-07-27
 
   * bugfix: require bugfixed version of Lexical::SealRequireHints (for

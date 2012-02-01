@@ -82,16 +82,16 @@ is numerically less than the index offset will have unpredictable results.
 =head2 Differences from C<$[>
 
 This module is a replacement for the historical L<C<$[>|perlvar/$[>
-variable.  In early Perl that variable was a runtime global, affecting
-all array indexing in the program.  In Perl 5, assignment to C<$[>
-acts as a lexically-scoped pragma.  C<$[> is highly deprecated, and
-the mechanism that supports it is due to be removed in Perl 5.15.
-This module reimplements the index offset feature without using the
-deprecated mechanism.
+variable.  In early Perl that variable was a runtime global, affecting all
+array and string indexing in the program.  In Perl 5, assignment to C<$[>
+acts as a lexically-scoped pragma.  C<$[> is deprecated.  The original
+C<$[> was removed in Perl 5.15.3, and later replaced in Perl 5.15.5 by
+an automatically-loaded L<arybase> module.  This module reimplements
+the index offset feature without any specific support from the core.
 
-Unlike C<$[>, this module does not affect indexing into strings
-(with L<index|perlfunc/index>, L<substr|perlfunc/substr>, and
-L<pos|perlfunc/pos>): this module is concerned only with arrays.
+Unlike C<$[>, this module does not affect indexing into strings.
+This module is concerned only with arrays.  To influence string indexing,
+see L<String::Base>.
 
 This module does not show the offset value in C<$[> or any other
 accessible variable.  With the array offset being lexically scoped,
@@ -120,12 +120,11 @@ where the operator appears.
 package Array::Base;
 
 { use 5.008001; }
+use Lexical::SealRequireHints 0.006;
 use warnings;
 use strict;
 
-use Lexical::SealRequireHints 0.005;
-
-our $VERSION = "0.004";
+our $VERSION = "0.005";
 
 require XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -166,6 +165,8 @@ propagate into string eval.
 
 =head1 SEE ALSO
 
+L<String::Base>,
+L<arybase>,
 L<perlvar/$[>
 
 =head1 AUTHOR
@@ -174,7 +175,8 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009, 2010, 2011 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010, 2011, 2012
+Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 
